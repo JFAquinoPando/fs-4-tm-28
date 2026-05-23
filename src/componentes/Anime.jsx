@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-
+import imagenPlaceholder from "./../../public/placeholder.webp";
 
 export const Anime = () => {
 
@@ -8,7 +8,7 @@ export const Anime = () => {
     const URI_API = "https://api.jikan.moe/v4/anime"
     const [datos, setDatos] = useState({
         nombre: "",
-        imagen: "",
+        imagen: imagenPlaceholder,
         trailer: "",
         episodios: 0,
         estado: "",
