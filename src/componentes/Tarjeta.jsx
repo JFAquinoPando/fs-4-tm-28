@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { Imagen } from "./Imagen.jsx";
+import { Link } from "react-router-dom";
 
-export function Tarjeta({ titulo, imagen, rating, tiempo, carrito, setCarrito }) {
+export function Tarjeta({ titulo, imagen, rating, tiempo, carrito, setCarrito, id }) {
 
   const [chequeado, setChequeado] = useState(false)
 
@@ -18,26 +19,51 @@ export function Tarjeta({ titulo, imagen, rating, tiempo, carrito, setCarrito })
 
 
   return <article
-    className="border rounded-3xl 
-    bg-gray-800 overflow-hidden flex gap-6
-    flex-col justify-between
+    className="bg-zinc-900 rounded-lg overflow-hidden flex flex-col h-full border border-zinc-800 hover:bg-zinc-800 transition-colors group
     ">
-    <figure className="overflow-hidden">
-      <Imagen titulo={titulo} fuente={imagen} estado={chequeado} />
+    <figure className="relative overflow-hidden aspect-[2/3]">
+      <Link to={`/anime/${id}`}>
+        <Imagen titulo={titulo} fuente={imagen} estado={chequeado} />
+      </Link>
+      <div className="absolute top-2 left-2">
+        <button
+          onClick={handleClick}
+          className={`p-2 rounded-sm backdrop-blur-md transition-colors ${chequeado ? 'bg-yellow-400 text-black' : 'bg-black/40 text-white hover:bg-black/60'
+            }`}
+        >
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+          </svg>
+        </button>
+      </div>
     </figure>
-    <div className="p-4 flex flex-col gap-4">
-      <h3 className="text-3xl">{titulo}</h3>
-      <ul className="text-3xl flex flex-col gap-4">
-        <li><strong>Audiencia</strong>:{rating}</li>
-        <li><strong>Tiempo</strong>:{tiempo}</li>
-      </ul>
+
+    <div className="p-3 flex flex-col flex-1 gap-2">
+      <div className="flex items-center gap-1.5 text-sm">
+        <svg className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        </svg>
+        <span className="text-zinc-400">{rating || "N/A"}</span>
+      </div>
+      <Link to={`/anime/${id}`}>
+        <h3 className="font-bold text-base leading-snug line-clamp-2 group-hover:text-yellow-400 transition-colors">
+          {titulo}
+        </h3>
+      </Link>
+
+      <p className="text-xs text-zinc-500 mt-auto">
+        {tiempo}
+      </p>
     </div>
+
     <button
       className={
         chequeado === true
-          ? `bg-green-700 text-blue-100 w-full p-4 border text-2xl`
-          : `bg-amber-300 text-black w-full p-4 border text-2xl`
+          ? `bg-zinc-800 text-yellow-400 w-full py-2.5 text-sm font-bold border-t border-zinc-700`
+          : `bg-zinc-800/50 text-blue-400 w-full py-2.5 text-sm font-bold border-t border-zinc-700 hover:bg-zinc-700 transition-colors`
       }
-      onClick={handleClick}>{chequeado === true ? "AGREGADO 🆗" : "Agregar 👜"}</button>
+      onClick={handleClick}>
+      {chequeado === true ? "✓ En lista" : "+ Watchlist"}
+    </button>
   </article>
 }

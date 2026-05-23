@@ -6,6 +6,7 @@ export function ListaAnime({ listado }) {
         function (anime, indice) {
             return <Tarjeta
                 key={indice}
+                id={anime.id}
                 titulo={anime.nombre}
                 imagen={anime.imagen}
                 rating={anime.rating}
