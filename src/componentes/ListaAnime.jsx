@@ -1,7 +1,7 @@
 import { Imagen } from "./Imagen.jsx";
 import { Tarjeta } from "./Tarjeta.jsx";
 
-export function ListaAnime({ listado, setCarrito }) {
+export function ListaAnime({ listado }) {
     return listado.map(
         function (anime, indice) {
             return <Tarjeta
@@ -11,7 +11,6 @@ export function ListaAnime({ listado, setCarrito }) {
                 imagen={anime.imagen}
                 rating={anime.rating}
                 tiempo={anime.duracion}
-                setCarrito={setCarrito}
             />
         }
     )

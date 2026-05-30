@@ -1,20 +1,26 @@
-import { useState } from "react"
 import { Imagen } from "./Imagen.jsx";
 import { Link } from "react-router-dom";
+import { useStorePropio } from "../store/zustand.js";
 
-export function Tarjeta({ titulo, imagen, rating, tiempo, carrito, setCarrito, id }) {
+export function Tarjeta({ titulo, imagen, rating, tiempo, id }) {
 
-  const [chequeado, setChequeado] = useState(false)
+  const { carritox, agregarCarrito, quitarCarrito } = useStorePropio()
+  
+  // Verificar si el anime ya está en el carrito
+  const chequeado = carritox.some(anime => anime.id === id)
 
   function handleClick() {
-    agregarAnime(titulo)
-    setChequeado(!chequeado)
-  }
-
-  function agregarAnime(anime) {
-    setCarrito((prevCarrito) => {
-      return [...prevCarrito, anime]
-    })
+    if (chequeado) {
+      quitarCarrito(id)
+    } else {
+      agregarCarrito({
+        id,
+        titulo,
+        imagen,
+        rating,
+        tiempo
+      })
+    }
   }
 
 

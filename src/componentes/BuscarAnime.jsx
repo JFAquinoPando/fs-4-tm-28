@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react"
 import { useLocation } from 'react-router-dom';
+import { usePaginaTotal } from "../store/zustand.js";
+
 
 export const BuscarAnime = ({ buscar, listado }) => {
     const URI_API = "https://api.jikan.moe/v4/anime?q"
     const localizacion = useLocation()
     const [texto, setTexto] = useState("")
+    
+     const { paginaActual, totalPaginas, cambiarPagina, cambiarTotalPaginas }
+    = usePaginaTotal()
 
     useEffect(function () {
-        // Solo ejecutar si estamos en la ruta home y hay texto
-        if (localizacion.pathname !== "/" || !texto.trim()) {
+        // Solo ejecutar búsqueda si estamos en la ruta "/" (home) y hay texto
+        if (localizacion.pathname !== "/") {
+            return
+        }
+
+        // Si no hay texto, limpiar resultados
+        if (!texto.trim()) {
             buscar([])
             return
         }
@@ -16,7 +26,7 @@ export const BuscarAnime = ({ buscar, listado }) => {
         // Debounce: esperar 800ms antes de hacer la petición
         const temporizador = setTimeout(async () => {
             try {
-                const peticion = await fetch(`${URI_API}=${texto}`)
+                const peticion = await fetch(`${URI_API}=${texto}&page=${paginaActual}`)
                 const respuesta = await peticion.json()
                 
                 const nuevaLista = respuesta.data?.map((item) => ({
@@ -26,6 +36,9 @@ export const BuscarAnime = ({ buscar, listado }) => {
                     rating: item.rating,
                     duracion: item.duration
                 })) || []
+                cambiarTotalPaginas(respuesta?.pagination?.last_visible_page || 1)
+                cambiarPagina(respuesta?.pagination?.current_page || 1)
+
 
                 buscar(nuevaLista)
             } catch (error) {
@@ -34,13 +47,10 @@ export const BuscarAnime = ({ buscar, listado }) => {
             }
         }, 800)
 
-        console.log("id del temporizador", temporizador);
-        
-
         // Limpieza: cancela el timeout si el usuario sigue escribiendo
         return () => clearTimeout(temporizador)
 
-    }, [texto, localizacion.pathname, buscar])
+    }, [texto, localizacion.pathname, buscar, paginaActual])
 
 
     return <div className="relative w-full">

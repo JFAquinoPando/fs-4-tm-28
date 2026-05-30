@@ -6,6 +6,7 @@ export function Menu() {
         <nav className="hidden md:flex items-center gap-6">
             <Link className="text-zinc-400 hover:text-white transition-colors font-medium" to="/">Inicio</Link>
             <Link className="text-zinc-400 hover:text-white transition-colors font-medium" to="/otro">Otro</Link>
+            <Link className="text-zinc-400 hover:text-white transition-colors font-medium" to="/mi-lista">Mi lista</Link>
         </nav>
     )
 }
