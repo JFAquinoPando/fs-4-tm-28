@@ -1,7 +1,7 @@
 {
-  "name": "fs-4-tm-30",
+  "name": "fs-4-tm-31",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^5.3.4",
-    "@tailwindcss/vite": "^4.3.0",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",

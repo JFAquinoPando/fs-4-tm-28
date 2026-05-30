@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import imagenPlaceholder from "./../../public/placeholder.webp";
+import { NoEncontrado } from "./NoEncontrado";
 
 export const Anime = () => {
 
@@ -19,12 +20,15 @@ export const Anime = () => {
         audiencia: "",
         puntuacion: 0
     })
+    const [codigo, setCodigo] = useState(200)
 
     useEffect(function () {
         async function pedirDatos() {
             const peticion = await fetch(`${URI_API}/${idAnime}`)
             const respuesta = await peticion.json()
-
+            if (respuesta.status !== undefined) {
+                setCodigo(respuesta.status)
+            }
             const {
                 title : nombre,
                 images: imagen,
@@ -56,7 +60,7 @@ export const Anime = () => {
     }, [])
 
 
-    return (
+    return codigo === 200 ? (
         <div className="min-h-screen bg-black text-white pb-12">
             {/* Header de la Película/Anime */}
             <div className="bg-zinc-900/50 border-b border-zinc-800 py-8 mb-8">
@@ -140,5 +144,7 @@ export const Anime = () => {
                 </div>
             </div>
         </div>
+    ) : (
+        <NoEncontrado />
     )
 }

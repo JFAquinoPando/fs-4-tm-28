@@ -7,11 +7,13 @@ import { MiLayout } from "./layouts/MiLayout.jsx";
 import { ResultadosAnime } from "./componentes/ResultadosAnime.jsx";
 import { Otro } from "./componentes/Otro.jsx";
 import { Anime } from "./componentes/Anime.jsx";
+import { NoEncontrado } from "./componentes/NoEncontrado.jsx";
 
 
 function Proyecto() {
 
     const [lista, setLista] = useState([])
+    const [carrito, setCarrito] = useState([])
 
     return (
         <div className="min-h-screen bg-black text-white font-sans">
@@ -19,13 +21,16 @@ function Proyecto() {
                 <MiLayout lista={lista} setLista={setLista}>
                     <Cambiar>
                         <Ruta exact path="/">
-                            <ResultadosAnime lista={lista} />
+                            <ResultadosAnime lista={lista} setCarrito={setCarrito} />
                         </Ruta>
                         <Ruta exact path="/otro">
                             <Otro />
                         </Ruta>
                         <Ruta path={`/anime/:idAnime`}>
                             <Anime />
+                        </Ruta>
+                        <Ruta path="*">
+                            <NoEncontrado />
                         </Ruta>
                     </Cambiar>
                 </MiLayout>
