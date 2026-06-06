@@ -3,6 +3,6 @@ export const useStorage = (clave, accion,valor=null) => {
         localStorage.setItem(clave, valor)
     }
     if (accion == "obtener") {
-        return localStorage.getItem(clave)
+        return localStorage.getItem(clave) ?? ""
     }
 }
