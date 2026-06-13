@@ -8,7 +8,14 @@ import { usePaginaTotal } from "../store/zustand.js";
 
 export function MiLayout({ children, lista, setLista }) {
     const { paginaActual, totalPaginas, cambiarPagina, cambiarTotalPaginas }
-    = usePaginaTotal()
+        = usePaginaTotal()
+
+
+    const ubicacionesBotones = {
+        inicio: 1,
+        final: totalPaginas
+    }
+
     return (
         <>
             <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
@@ -21,30 +28,76 @@ export function MiLayout({ children, lista, setLista }) {
                     <Menu />
 
                     <div className="flex-1 max-w-2xl">
-                        <BuscarAnime buscar={setLista} listado={lista}  />
+                        <BuscarAnime buscar={setLista} listado={lista} />
                     </div>
                 </div>
             </header>
             <main className="container mx-auto px-4 py-8">
-                {children}                
+                {children}
             </main>
-            <footer className="bg-red-600">
-                {
-                    (totalPaginas > 1) ? 
-                    [...new Array(totalPaginas)].map((e, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => {
-                           cambiarPagina(idx + 1) 
-                        }}
-                        className={`text-amber-50 text-3xl p-2 ${
-                            paginaActual === (idx +1) ? "bg-green-950" : ""
-                        }`}
-                    >
-                        Página {idx + 1}
-                    </button>))
-                    : <></> 
-                }
+            <footer className="bg-zinc-900 border-t border-zinc-800 sticky bottom-0">
+                <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4 flex-wrap">
+                    {
+                        (totalPaginas > 1) ?
+                            <>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => {
+                                            if (paginaActual > ubicacionesBotones.inicio) {
+                                                cambiarPagina(paginaActual - 1)
+                                            }
+                                        }}
+                                        className={`px-4 py-2 rounded font-semibold transition-all ${
+                                            paginaActual === ubicacionesBotones.inicio
+                                                ? "bg-zinc-700 text-zinc-400 cursor-not-allowed"
+                                                : "bg-yellow-400 text-black hover:bg-yellow-500"
+                                        }`}
+                                    >
+                                        ← Anterior
+                                    </button>
+
+                                    <button
+                                        onClick={() => {
+                                            if (paginaActual < ubicacionesBotones.final) {
+                                                cambiarPagina(paginaActual + 1)
+                                            }
+                                        }}
+                                        className={`px-4 py-2 rounded font-semibold transition-all ${
+                                            paginaActual === ubicacionesBotones.final
+                                                ? "bg-zinc-700 text-zinc-400 cursor-not-allowed"
+                                                : "bg-yellow-400 text-black hover:bg-yellow-500"
+                                        }`}
+                                    >
+                                        Siguiente →
+                                    </button>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <label htmlFor="cambia-pagina" className="text-zinc-200 font-medium">
+                                        Página:
+                                    </label>
+                                    <select
+                                        id="cambia-pagina"
+                                        value={paginaActual}
+                                        onChange={(evento) => {
+                                            cambiarPagina(Number(evento.target.value))
+                                        }}
+                                        className="bg-zinc-800 text-yellow-400 px-3 py-2 rounded border border-zinc-700 hover:border-yellow-400 focus:border-yellow-400 focus:outline-none cursor-pointer"
+                                    >
+                                        {
+                                            [...new Array(totalPaginas)].map((e, idx) => (
+                                                <option key={idx + 1} value={idx + 1}>
+                                                    {idx + 1} de {totalPaginas}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                            </>
+                            :
+                            <></>
+                    }
+                </div>
             </footer>
         </>
     )

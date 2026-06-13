@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
-import { useStorePropio } from "./../store/zustand.js";
+import { useStorePropio } from "../store/zustand.js";
 
 
 export const VerAnimes = () => {
